@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Derma Clinic</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        background-image: url("./imges/abstract-geometric-shape-medicine-science-260nw-767767987.webp");
+        /* URL or path to your background image */
+        background-size: cover;
+        /* Cover the entire background */
+        background-position: center;
+        /* Center the background image */
+    }
+
+    .container {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    #dermaBrief {
+        width: 50%;
+        padding: 20px;
+        box-sizing: border-box;
+        color: #333;
+    }
+
+    #dermaDeviceImage {
+        width: 50%;
+        margin-top: 30px;
+    }
+
+    form {
+        background-color: rgba(255, 255, 255, 0.8);
+        /* Semi-transparent white background for the form */
+        padding: 20px;
+        border-radius: 2px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px; /* Adjust the width as needed */
+        width: 50%;
+        position: relative;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="tel"],
+    select {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin: 5px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    input[type="submit"],
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: calc(100% - 20px);
+    }
+
+    input[type="submit"]:hover,
+    button:hover {
+        background-color: #45a049;
+    }
+
+    /* Styling for the images */
+    .doctor-photo {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        /* Makes the image circular */
+        margin-bottom: 10px;
+    }
+
+    .pharmacy-icon,
+    .additional-icon {
+        width: 50px;
+        /* Adjust the size as needed */
+        height: 50px;
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Brief about Derma Clinic -->
+    <div id="dermaBrief">
+        <p>Derma clinic is an innovative project that aims to provide a convenient and efficient solution for dermatological analysis and treatment recommendation through image analysis. The project eliminates the need for patients to physically visit a clinic, thereby saving time, effort, and resources.</p>
+        <!-- Image of Derma Clinic Device -->
+        <img src="./imges/WhatsApp Image 2024-03-15 at 18.51.38_ec91ee79.jpg" alt="Derma Clinic Device" id="dermaDeviceImage">
+    </div>
+
+    <form id="loginForm">
+        <!-- Example doctor photo -->
+        <img src="./imges/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg" alt="Doctor Photo" class="doctor-photo">
+        
+        <!-- Title -->
+        <h2 style="margin-right: 100px;">Derma Clinic - Sign In</h2>
+
+        <!-- Form Inputs -->
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+
+        <label for="sex">Sex:</label>
+        <select id="sex" name="sex">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
+
+        <label for="mobile">Mobile Number:</label>
+        <input type="tel" id="mobile" name="mobile">
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" name="weight">
+
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" name="height">
+
+        <!-- Capture Photo Button -->
+        <button onclick="openCamera()">Capture Photo</button>
+        
+        <!-- Example pharmacy icon -->
+        <img src="./imges/1000_F_41026551_aNWFgzAz8brWW0rdjPeOQUuVadG7cLF2.jpg" alt="Pharmacy Icon" class="pharmacy-icon">
+
+        <!-- Additional Icon -->
+        <img src="./imges/images.png" alt="Additional Icon" class="additional-icon">
+
+        <!-- Save Button -->
+        <button onclick="saveInformation()">Save</button>
+    </form>
+</div>
+
+<script>
+    function openCamera() {
+        // Check if the browser supports getUserMedia API
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Request access to the camera
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    // Display the camera stream in a video element
+                    var video = document.createElement('video');
+                    video.srcObject = stream;
+                    video.play();
+
+                    // Append the video element to the form
+                    var form = document.getElementById('loginForm');
+                    form.appendChild(video);
+
+                    // Add a capture button
+                    var captureButton = document.createElement('button');
+                    captureButton.textContent = 'Capture';
+                    captureButton.onclick = function() {
+                        // Capture an image from the video stream
+                        var canvas = document.createElement('canvas');
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        var context = canvas.getContext('2d');
+                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        var imageDataURL = canvas.toDataURL('image/png');
+
+                        // Create an image element to display the captured image
+                        var capturedImage = document.createElement('img');
+                        capturedImage.src = imageDataURL;
+                        capturedImage.style.maxWidth = '100%';
+
+                        // Replace the video element with the captured image
+                        form.replaceChild(capturedImage, video);
+
+                        // Stop the video stream
+                        stream.getVideoTracks()[0].stop();
+                    };
+
+                    // Append the capture button to the form
+                    form.appendChild(captureButton);
+                })
+                .catch(function(error) {
+                    console.error('Error accessing the camera:', error);
+                });
+        } else {
+            alert('Your browser does not support camera access.');
+        }
+    }
+
+    function saveInformation() {
+        // Get values from input fields
+        var username = document.getElementById('username').value;
+        var age = document.getElementById('age').value;
+        var sex = document.getElementById('sex').value;
+        var mobile = document.getElementById('mobile').value;
+        var weight = document.getElementById('weight').value;
+        var height = document.getElementById('height').value;
+
+        // You can perform further validation here if needed
+
+        // Display a message
+        alert("Thank you for your registration your deseas is Herps(HSV-1) and your treatment is (Acyclovir)!");
+
+        // Optionally, you can reset the form after saving
+        document.getElementById('loginForm').reset();
+    }
+</script>
+</body>
+</html>
